@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Grand Chess &mdash; photoreal chess with a built-in engine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Complete FIDE chess in the browser: photoreal Staunton pieces, physical animation, synthesized sound and an alpha-beta engine in a Web Worker with five strengths.">
+<meta property="og:title" content="Grand Chess">
+<meta property="og:image" content="screenshots/hero.jpg">
+<style>
+  :root { --gold: #e9c250; --paper: #f3e2b0; --muted: #b7a77a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: radial-gradient(ellipse at 50% 0%, #2a1c12 0%, #07060c 60%); color: var(--paper); font-family: "Segoe UI", system-ui, sans-serif; line-height: 1.55; }
+  a { color: var(--gold); }
+  header { text-align: center; padding: 64px 20px 24px; }
+  header h1 { font-family: Georgia, serif; font-size: 72px; letter-spacing: 12px; margin: 0; background: linear-gradient(180deg, #fff6c8, #f8d865 40%, #b8860b 52%, #f5cf4a 62%, #8a5a06); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  header p.tag { letter-spacing: 5px; color: var(--muted); margin: 14px 0 28px; font-size: 14px; text-transform: uppercase; }
+  .cta { display: inline-block; padding: 16px 40px; border-radius: 14px; font-weight: 800; letter-spacing: 2px; color: #1a1200; text-decoration: none; background: linear-gradient(180deg, #fff3b0, #f3c400 40%, #b58900); box-shadow: 0 6px 0 #3a2a00, 0 14px 30px rgba(0,0,0,.6); }
+  .hero { display: block; width: min(1200px, 94vw); margin: 40px auto 0; border-radius: 14px; border: 2px solid #4a3b14; box-shadow: 0 30px 80px rgba(0,0,0,.8); }
+  main { max-width: 1200px; margin: 0 auto; padding: 40px 20px 80px; }
+  h2 { font-family: Georgia, serif; color: var(--gold); letter-spacing: 3px; font-size: 26px; margin: 56px 0 18px; border-bottom: 1px solid #3a3012; padding-bottom: 10px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+  .card { background: rgba(255,255,255,.03); border: 1px solid #3a3012; border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 8px; color: #ffe9a8; font-size: 17px; } .card p { margin: 0; color: #d9ccaa; font-size: 15px; }
+  .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 22px; }
+  figure { margin: 0; } figure img { width: 100%; border-radius: 10px; border: 1px solid #3a3012; box-shadow: 0 12px 30px rgba(0,0,0,.6); } figcaption { font-size: 14px; color: var(--muted); margin-top: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; } td, th { border-bottom: 1px solid #2a2410; padding: 8px 10px; text-align: left; } th { color: var(--gold); }
+  code { background: #15131c; padding: 2px 6px; border-radius: 4px; color: #ffe9a8; }
+  footer { text-align: center; color: #7d6a3a; font-size: 13px; padding: 30px 20px 60px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>GRAND CHESS</h1>
+  <p class="tag">Photoreal Staunton set &middot; complete FIDE rules &middot; engine in a Web Worker</p>
+  <a class="cta" href="../index.html">PLAY IN YOUR BROWSER</a>
+  <img class="hero" src="screenshots/hero.jpg" alt="A middlegame on the walnut and maple board with the move list beside it">
+</header>
+<main>
+  <h2>What it is</h2>
+  <p>A complete chess game in plain HTML5 Canvas and vanilla JavaScript: every rule of play (castling, en passant, promotion, check, checkmate, stalemate, the fifty-move rule, threefold repetition, insufficient material), an alpha-beta engine that runs in a Web Worker so the board never stalls, photoreal pieces and a wooden board, physical move animation and synthesized sound. No frameworks, no build step, no server.</p>
+  <h2>Features</h2>
+  <div class="grid">
+    <div class="card"><h3>Verified rules</h3><p>The move generator reproduces the standard perft counts (start position to depth 4, Kiwipete, positions 3, 4 and 5) and detects every draw and mate condition.</p></div>
+    <div class="card"><h3>Engine</h3><p>Iterative deepening alpha-beta with quiescence, transposition table, killer and history ordering, null-move pruning, late-move reductions, check extensions, tapered piece-square evaluation, a small opening book and five strength levels from Beginner to Master.</p></div>
+    <div class="card"><h3>Play your way</h3><p>Human vs engine as either colour, two humans at one board, optional clocks with increments, hints, undo and redo, board flip, PGN export/import and FEN loading.</p></div>
+    <div class="card"><h3>Physical feel</h3><p>Pieces slide with a lift and shadow, captured pieces are knocked off to the side, castling moves both pieces, promotion morphs the pawn, the checked king glows.</p></div>
+    <div class="card"><h3>Sound</h3><p>Wooden set-downs that differ by piece, capture thuds, the castling double tap, check and promotion chimes, clock ticks and game-over tones, with a crackling fireplace bed &mdash; all synthesized live.</p></div>
+    <div class="card"><h3>Tested headless</h3><p><code>node tools/smoke.mjs</code> drives real mouse input, the promotion dialog, undo/redo, PGN, draws, the engine and the clocks in headless Chrome.</p></div>
+  </div>
+  <h2>Screenshots</h2>
+  <div class="shots">
+    <figure><img src="screenshots/start.jpg" alt="Start position"><figcaption>The starting position.</figcaption></figure>
+    <figure><img src="screenshots/midgame.jpg" alt="Middlegame"><figcaption>A Najdorf middlegame with the last move and a selected piece's legal targets.</figcaption></figure>
+    <figure><img src="screenshots/check.jpg" alt="Check"><figcaption>The checked king glows red.</figcaption></figure>
+    <figure><img src="screenshots/promotion.jpg" alt="Promotion dialog"><figcaption>Choosing the promotion piece.</figcaption></figure>
+    <figure><img src="screenshots/checkmate.jpg" alt="Checkmate"><figcaption>Checkmate overlay with rematch and review options.</figcaption></figure>
+    <figure><img src="screenshots/settings.jpg" alt="Settings"><figcaption>Colours, strength and clock settings.</figcaption></figure>
+  </div>
+  <h2>Controls</h2>
+  <table>
+    <tr><th>Action</th><th>Mouse</th><th>Keyboard</th></tr>
+    <tr><td>Move</td><td>Click a piece then a square, or drag it</td><td>&mdash;</td></tr>
+    <tr><td>New game / undo / redo</td><td>NEW / UNDO / REDO</td><td><code>N</code> / <code>U</code> or <code>&larr;</code> / <code>R</code> or <code>&rarr;</code></td></tr>
+    <tr><td>Hint / flip / mute</td><td>HINT / FLIP / speaker</td><td><code>H</code> / <code>F</code> / <code>M</code></td></tr>
+    <tr><td>Settings, PGN and FEN</td><td>SETUP / PGN</td><td><code>Esc</code> closes</td></tr>
+  </table>
+  <h2>Run it yourself</h2>
+  <p>Open <code>index.html</code> (the engine then runs on the main thread) or serve the folder for the Web Worker engine: <code>python -m http.server 8769</code>, or <code>start.cmd</code> on Windows. See the README for the configuration and tools.</p>
+</main>
+<footer>Artwork generated for this project &middot; all sound synthesized at runtime &middot; free to play, no accounts, nothing collected.</footer>
+</body>
+</html>

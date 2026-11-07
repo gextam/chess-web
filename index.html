@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Grand Chess</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="stage">
+  <canvas id="game" width="1920" height="1080"></canvas>
+
+  <aside id="panel">
+    <div class="player top"><div class="who"><span id="top-name">Engine</span><span id="top-clock" class="clock"></span></div><div id="top-cap" class="cap"></div></div>
+    <div id="moves"></div>
+    <div id="status">White to move</div>
+    <div id="engine-info"></div>
+    <div class="controls">
+      <button id="btn-new" class="btn" title="New game (N)">NEW</button>
+      <button id="btn-undo" class="btn" title="Undo (U)">UNDO</button>
+      <button id="btn-redo" class="btn" title="Redo (R)">REDO</button>
+      <button id="btn-hint" class="btn" title="Hint (H)">HINT</button>
+      <button id="btn-flip" class="btn" title="Flip board (F)">FLIP</button>
+      <button id="btn-resign" class="btn" title="Resign">RESIGN</button>
+      <button id="btn-pgn" class="btn" title="PGN / FEN import and export">PGN</button>
+      <button id="btn-settings" class="btn" title="Settings">SETUP</button>
+      <button id="btn-sound" class="btn icon" title="Mute (M)">&#128266;</button>
+      <input id="vol" type="range" min="0" max="1" step="0.01" title="Volume">
+    </div>
+    <div id="settings" class="box hidden">
+      <label>White <select id="sel-white"><option value="human">Human</option><option value="ai">Engine</option></select></label>
+      <label>Black <select id="sel-black"><option value="human">Human</option><option value="ai" selected>Engine</option></select></label>
+      <label>Strength <input id="sel-level" type="range" min="1" max="5" step="1" value="3"> <span id="level-name">Club</span></label>
+      <label>Clock <select id="sel-clock"><option value="none" selected>No clock</option><option value="1+0">1 min</option><option value="3+2">3 + 2</option><option value="5+0">5 min</option><option value="10+0">10 min</option><option value="15+10">15 + 10</option><option value="30+0">30 min</option></select></label>
+      <button id="btn-apply" class="btn gold">START NEW GAME</button>
+    </div>
+    <div id="pgnbox" class="box hidden">
+      <textarea id="pgn-text" spellcheck="false" placeholder="PGN or FEN"></textarea>
+      <div class="row"><button id="btn-pgn-copy" class="btn">COPY</button><button id="btn-pgn-load" class="btn">LOAD PGN</button><button id="btn-fen-load" class="btn">LOAD FEN</button><button id="btn-pgn-close" class="btn">CLOSE</button></div>
+    </div>
+    <div class="player bottom"><div class="who"><span id="bot-name">You</span><span id="bot-clock" class="clock"></span></div><div id="bot-cap" class="cap"></div></div>
+    <input id="fen" class="fen" readonly title="FEN of the current position">
+  </aside>
+
+  <div id="promo" class="hidden"><div class="panel"><h3>Promote to</h3><button data-p="Q"><img alt="Queen"></button><button data-p="R"><img alt="Rook"></button><button data-p="B"><img alt="Bishop"></button><button data-p="N"><img alt="Knight"></button></div></div>
+  <div id="gameover" class="hidden"><div class="panel"><h2 id="over-title">Checkmate</h2><p id="over-reason"></p><div class="row"><button id="btn-over-new" class="btn gold">NEW GAME</button><button id="btn-over-rematch" class="btn">REMATCH (SWAP)</button><button id="btn-over-close" class="btn">REVIEW BOARD</button></div></div></div>
+
+  <div id="splash"><div class="inner"><div class="title">GRAND CHESS</div><div class="sub">STAUNTON PIECES &middot; WORKER ENGINE &middot; FIVE STRENGTHS</div><div id="splash-text">LOADING&hellip;</div><div class="note">Click to begin &middot; sound on</div></div></div>
+</div>
+
+<script src="js/chess.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/audio-chess.js"></script>
+<script src="js/assets.js"></script>
+<script src="js/renderer.js"></script>
+<script src="js/game.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
